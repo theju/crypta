@@ -41,8 +41,8 @@ $ python manage.py runserver
 
 ## Acknowledgements
 
-* OpenPGP.js - Handles the client-side encryption and decryption.
-* Django - The application server that powers the REST API.
+* [OpenPGP.js](https://openpgpjs.org/) - Handles the client-side encryption and decryption.
+* [Django](https://djangoproject.com/) - The application server that powers the REST API.
 
 ## License
 

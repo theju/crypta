@@ -1,6 +1,6 @@
 # Crypta
 
-Crypta is a password storage vault inspired by [Pass](https://www.passwordstore.org/).
+Crypta is a web-based password storage vault inspired by [Pass](https://www.passwordstore.org/).
 
 ## Overview
 

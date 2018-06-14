@@ -1,0 +1,72 @@
+<!doctype html>{% load i18n static %}{% get_static_prefix as STATIC_URL %}
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div>
+                <a href="{% url "index" %}" class="btn">{% trans "Home" %}</a>
+            </div>
+            <div class="settings">
+                <form method="post">
+                    <p>
+                        {% trans "Import keys from a file" %}
+                        <input type="file" name="keys_file" />
+                    </p>
+                    <p>{% trans "OR" %}</p>
+                    <p>
+                        <label for="public_key">{% trans "Public Key" %}:</label>
+                        <textarea id="public_key" name="public_key"></textarea>
+                    </p>
+                    <p>
+                        <label for="private_key">{% trans "Private Key" %}:</label>
+                        <textarea id="private_key" name="private_key"></textarea>
+                    </p>
+                    <p>
+                        <label for="passphrase">{% trans "Passphrase" %}:</label>
+                        <input type="password" id="passphrase" name="passphrase" />
+                    </p>
+                    <p>
+                        <label for="server">{% trans "Base server URL" %}:</label>
+                        <input type="url" id="server" name="server" value="{{ domain }}" />
+                    </p>
+                    <p>{% trans "Please back up these values and keep them safe to prevent loss/misuse." %}</p>
+                    <p class="download hidden">
+                        <a href="javascript:void(0)" class="btn">{% trans "Download keys" %}</a>
+                    </p>
+                    <p class="import hidden"><input type="submit" value="{% trans "Import" %}" /></p>
+                </form>
+            </div>
+
+            <div class="generate hidden">
+                <h3>{% trans "Enter passphrase and generate keypair" %}</h3>
+                <p class="import"><a href="#">{% trans "Or import existing Public and Private Key" %}</a></p>
+                <form method="post">
+                    <p>
+                        <label for="name">{% trans "Your Name (optional)" %}:</label>
+                        <input type="text" id="name" name="name" />
+                    </p>
+                    <p>
+                        <label for="email">{% trans "Your Email (optional)" %}:</label>
+                        <input type="email" id="email" name="email" />
+                    </p>
+                    <p>
+                        <label for="new_passphrase">{% trans "Passphrase to encrypt your passwords (required)" %}:</label>
+                        <input type="password" id="new_passphrase" name="passphrase" />
+                    </p>
+                    <p>
+                        <label for="new_server">{% trans "Please enter the base server URL" %}:</label>
+                        <input type="url" id="new_server" name="server" value="{{ domain }}" />
+                    </p>
+                    <p>{% trans "The name, email and public key (next screen) will be transmitted to the server." %}</p>
+                    <p><input type="submit" value="{% trans "Generate" %}" /></p>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/openpgp.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/options.js"></script>
+    </body>
+</html>

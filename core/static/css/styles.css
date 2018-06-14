@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: Helvetica;
+    font-size: 1rem;
+    line-height: 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    padding: 1rem;
+}
+
+form input {
+    width: 100%;
+    height: 25px;
+}
+
+form textarea {
+    width: 100%;
+    height: 100px;
+}
+
+form input[type=submit], form input[type=button] {
+    height: 36px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn {
+    background-color: #ccc;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem;
+    border: 1px solid #eee;
+    width: calc(100% - 0.5rem);
+    display: block;
+    text-align: center;
+}
+
+.options .btn {
+    display: inline;
+    width: 20%;
+    float: right;
+}
+
+.search_container #search {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.generate .import {
+    font-size: 12px;
+}
+
+.contents ul.rows {
+    padding: 0;
+}
+
+.contents li.row {
+    font-size: 1rem;
+    list-style-type: none;
+    border: 1px solid #eee;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.contents li.row:nth-child(even) {
+    background-color: #eee;
+}
+
+.contents li.row span {
+    white-space: pre;
+}
+
+.pagination .next {
+    float: right;
+    width: 25%;
+}
+
+.pagination .prev {
+    float: left;
+    width: 25%;
+}

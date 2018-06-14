@@ -1,0 +1,14 @@
+{ {% load static %}{% get_static_prefix as STATIC_URL %}
+    "name": "{{ title }}",
+    "short_name": "{{ title }}",
+    "icons": [
+        {
+            "src": "{{ STATIC_URL }}icons/icon_256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "orientation": "portrait",
+    "display": "standalone"
+}

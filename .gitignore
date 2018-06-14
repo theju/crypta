@@ -1,0 +1,8 @@
+*~
+*.pyc
+*.pyo
+*.swp
+
+crypta/local.py
+
+*.sqlite3

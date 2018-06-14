@@ -1,6 +1,6 @@
 # Crypta
 
-Crypta is a password storage vault inspired by (Pass)[https://www.passwordstore.org/].
+Crypta is a password storage vault inspired by [Pass](https://www.passwordstore.org/).
 
 ## Overview
 
@@ -26,11 +26,12 @@ All the encryption and decryption is performed on the client-side.
 
 ## Install
 
-The project can be easily setup using (Pipenv)[https://docs.pipenv.org/#install-pipenv-today].
+The project can be easily setup using [Pipenv](https://docs.pipenv.org/#install-pipenv-today).
 
 ```
 $ git clone https://github.com/theju/crypta
 $ cd crypta
+$ pipenv install
 $ pipenv shell
 # Create a crypta/local.py file and add the
 # `SECRET_KEY`, `DEBUG` and `ALLOWED_HOSTS` django settings attributes

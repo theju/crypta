@@ -1,4 +1,5 @@
 (function() {
+    let baseURL = window.location.pathname;
     let gpgOpts = {};
 
     let $ = function(sel) { return document.querySelector(sel); };
@@ -213,7 +214,7 @@
     function fetchOpts() {
         let obj = localStorage.getItem('gpg_options');
         if (!obj) {
-            window.location = '/options/';
+            window.location = baseURL + 'options/';
         } else {
             gpgOpts = JSON.parse(obj);
             gpgOpts.publicKeyObj = openpgp.key.readArmored(gpgOpts.public_key).keys[0];

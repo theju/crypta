@@ -2,7 +2,7 @@
     var $ = function(sel) {
         return document.querySelector(sel);
     };
-    var opts = JSON.parse(localStorage.getItem('gpg_options') || '{}');
+    var opts = JSON.parse(sessionStorage.getItem('gpg_options') || '{}');
     if (Object.keys(opts).length > 0) {
         $('[name=public_key]').value = opts.public_key;
         $('[name=private_key]').value = opts.private_key;
@@ -49,7 +49,7 @@
             if (email) {
                 opts.email = email;
             }
-            localStorage.setItem('gpg_options', JSON.stringify(opts));
+            sessionStorage.setItem('gpg_options', JSON.stringify(opts));
             uploadToServer(opts);
         });
     });
@@ -93,7 +93,7 @@
         var passphrase = $('.settings [name=passphrase]').value;
         var server = $('.settings [name=server]').value;
         var fingerprint = pubkeyObj.primaryKey.fingerprint;
-        localStorage.setItem('gpg_options', JSON.stringify({
+        sessionStorage.setItem('gpg_options', JSON.stringify({
             public_key: pubkey,
             private_key: privkey,
             passphrase: passphrase,

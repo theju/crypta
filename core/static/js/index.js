@@ -212,7 +212,7 @@
     }
 
     function fetchOpts() {
-        let obj = localStorage.getItem('gpg_options');
+        let obj = sessionStorage.getItem('gpg_options');
         if (!obj) {
             window.location = baseURL + 'options/';
         } else {

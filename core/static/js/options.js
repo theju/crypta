@@ -13,8 +13,9 @@
         $('.settings').classList.add('settings', 'hidden');
         $('.generate').classList.remove('hidden');
     }
-    $('input[name=new_server]').value = window.location.href.replace('/options/', '').replace('#', '');
-    $('input[name=server]').value = window.location.href.replace('/options/', '').replace('#', '');
+    var basePath = window.location.href.replace('/options/', '').replace('#', '');
+    $('#new_server').value = basePath;
+    $('#server').value = basePath;
 
     $('.generate form').addEventListener('submit', function(ev) {
         ev.preventDefault();

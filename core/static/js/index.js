@@ -348,12 +348,14 @@
 
     $('.contents').addEventListener('click', function(ev) {
         if (ev.target.parentNode && ev.target.parentNode.classList.contains('row')) {
-            if (ev.target.parentNode.querySelector('.hidden')) {
-                ev.target.parentNode.querySelector('.hidden').classList.remove('hidden');
-                ev.target.innerText = 'Hide';
-            } else {
-                ev.target.parentNode.querySelector('span').classList.add('hidden');
-                ev.target.innerText = 'View';
+            if (ev.target.tagName.toLowerCase() === 'a') {
+                if (ev.target.parentNode.querySelector('.hidden')) {
+                    ev.target.parentNode.querySelector('.hidden').classList.remove('hidden');
+                    ev.target.innerText = 'Hide';
+                } else {
+                    ev.target.parentNode.querySelector('span').classList.add('hidden');
+                    ev.target.innerText = 'View';
+                }
             }
         }
         if (ev.target.classList.contains('next') || ev.target.classList.contains('prev')) {

@@ -13,6 +13,7 @@
         $('.settings').classList.add('settings', 'hidden');
         $('.generate').classList.remove('hidden');
     }
+    $('input[name=url]').value = window.location.href('/options/', '').replace('#', '');
 
     $('.generate form').addEventListener('submit', function(ev) {
         ev.preventDefault();

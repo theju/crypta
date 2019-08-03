@@ -9,10 +9,6 @@
     </head>
     <body>
         <div class="container">
-            <div class="options">
-                <a href="./options/" class="btn">{% trans "Options" %}</a>
-                <a href="javascript:void(0)" class="btn export">{% trans "View All" %}</a>
-            </div>
             <div class="search_container">
                 <p class="error"></p>
                 <p>
@@ -28,6 +24,12 @@
                         <p class="delete_container hidden"><input type="button" value="{% trans "Delete" %}" class="delete" /></p>
                     </form>
                 </div>
+            </div>
+            <div class="all">
+                <a href="javascript:void(0)" class="btn export">{% trans "View All" %}</a>
+            </div>
+            <div class="options">
+                <a href="./options/" class="btn">{% trans "Options" %}</a>
             </div>
         </div>
         <script type="text/javascript" src="{{ STATIC_URL }}js/openpgp.min.js"></script>

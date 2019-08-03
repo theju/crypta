@@ -32,7 +32,7 @@
                 let encKey = hex(bf);
                 let message = '' + (new Date()).getTime() + ':' + encKey;
                 openpgp.sign({
-                    data: message,
+                    message: openpgp.cleartext.fromText(message),
                     privateKeys: [gpgOpts.privateKeyObj],
                     armor: true,
                     detached: true
@@ -102,13 +102,13 @@
                 let encKey = hex(bf);
                 let message = '' + (new Date()).getTime() + ':' + encKey;
                 openpgp.sign({
-                    data: message,
+                    message: openpgp.cleartext.fromText(message),
                     privateKeys: [gpgOpts.privateKeyObj],
                     armor: true,
                     detached: true
                 }).then(function(signatureObj) {
                     openpgp.encrypt({
-                        data: val,
+                        message: openpgp.message.fromText(val),
                         publicKeys: [gpgOpts.publicKeyObj],
                         privateKeys: gpgOpts.privateKeyObj
                     }).then(function(encVal) {
@@ -179,7 +179,7 @@
                 let encKey = hex(bf);
                 let message = '' + (new Date()).getTime() + ':' + encKey;
                 openpgp.sign({
-                    data: message,
+                    message: openpgp.cleartext.fromText(message),
                     privateKeys: [gpgOpts.privateKeyObj],
                     armor: true,
                     detached: true
@@ -212,14 +212,14 @@
         });
     }
 
-    function fetchOpts() {
+    async function fetchOpts() {
         let obj = sessionStorage.getItem('gpg_options');
         if (!obj) {
             window.location = baseURL + './options/';
         } else {
             gpgOpts = JSON.parse(obj);
-            gpgOpts.publicKeyObj = openpgp.key.readArmored(gpgOpts.public_key).keys[0];
-            gpgOpts.privateKeyObj = openpgp.key.readArmored(gpgOpts.private_key).keys[0];
+            gpgOpts.publicKeyObj = (await openpgp.key.readArmored(gpgOpts.public_key)).keys[0];
+            gpgOpts.privateKeyObj = (await openpgp.key.readArmored(gpgOpts.private_key)).keys[0];
             gpgOpts.privateKeyObj.decrypt(gpgOpts.passphrase).catch(function(err) {
                 $('.error').innerText = err;
             });
@@ -256,7 +256,7 @@
                 let encKey = hex(bf);
                 let message = '' + (new Date()).getTime() + ':' + encKey;
                 openpgp.sign({
-                    data: message,
+                    message: openpgp.cleartext.fromText(message),
                     privateKeys: [gpgOpts.privateKeyObj],
                     armor: true,
                     detached: true
@@ -334,9 +334,9 @@
     }
 
     function decrypt(data) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(async function(resolve, reject) {
             openpgp.decrypt({
-                message: openpgp.message.readArmored(data),
+                message: await openpgp.message.readArmored(data),
                 publicKeys: [gpgOpts.publicKeyObj],
                 privateKeys: gpgOpts.privateKeyObj
             }).then(function(val) {

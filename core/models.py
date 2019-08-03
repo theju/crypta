@@ -4,7 +4,7 @@ from django.db import models
 class User(models.Model):
     name  = models.CharField(max_length=50, null=True)
     email = models.EmailField(null=True)
-    fingerprint = models.CharField(max_length=40, unique=True)
+    fingerprint = models.TextField(unique=True)
     public_key  = models.TextField()
 
     def __str__(self):

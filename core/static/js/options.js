@@ -30,14 +30,14 @@
         var passphrase = $('.generate [name=passphrase]').value;
         var options = {
             userIds: userIds,
-            numBits: 2048,
+            numBits: 4096,
             passphrase: passphrase
         };
 
         openpgp.generateKey(options).then(function(obj) {
             var privkey = obj.privateKeyArmored;
             var pubkey = obj.publicKeyArmored;
-            var fingerprint = obj.key.primaryKey.fingerprint;
+            var fingerprint = obj.key.primaryKey.getFingerprint();
             var server = $('.generate [name=server]').value;
             var opts = {
                 public_key: pubkey,
@@ -88,14 +88,14 @@
         $('.settings .import').classList.remove('hidden');
     });
 
-    $('.settings form').addEventListener('submit', function(ev) {
+    $('.settings form').addEventListener('submit', async function(ev) {
         ev.preventDefault();
         var pubkey = $('.settings [name=public_key]').value;
-        var pubkeyObj = openpgp.key.readArmored(pubkey).keys[0];
+        var pubkeyObj = (await openpgp.key.readArmored(pubkey)).keys[0];
         var privkey = $('.settings [name=private_key]').value;
         var passphrase = $('.settings [name=passphrase]').value;
         var server = $('.settings [name=server]').value;
-        var fingerprint = pubkeyObj.primaryKey.fingerprint;
+        var fingerprint = pubkeyObj.primaryKey.getFingerprint();
         sessionStorage.setItem('gpg_options', JSON.stringify({
             public_key: pubkey,
             private_key: privkey,
@@ -128,9 +128,9 @@
     $('[name=keys_file]').addEventListener('change', function (ev) {
         var fr = new FileReader();
         document.querySelectorAll(".error").forEach(ii => ii.remove());
-        fr.addEventListener('load', function (event) {
+        fr.addEventListener('load', async function (event) {
             var data = event.target.result;
-            var keys = openpgp.key.readArmored(data).keys;
+            var keys = (await openpgp.key.readArmored(data)).keys;
             if (keys.length > 0) {
                 var privKeyObj = keys[0];
                 $('[name=private_key]').value = data;

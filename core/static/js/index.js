@@ -64,6 +64,7 @@
                         } else {
                             response.json().then(function(data) {
                                 decrypt(data.val).then(function(val) {
+                                    $('.contents').classList.add('hidden');
                                     $('.add').classList.remove('hidden');
                                     $('.add textarea').value = val.data;
                                     $('input[name=mode]').value = 'update';
@@ -214,7 +215,7 @@
     function fetchOpts() {
         let obj = sessionStorage.getItem('gpg_options');
         if (!obj) {
-            window.location = baseURL + 'options/';
+            window.location = baseURL + './options/';
         } else {
             gpgOpts = JSON.parse(obj);
             gpgOpts.publicKeyObj = openpgp.key.readArmored(gpgOpts.public_key).keys[0];
@@ -284,8 +285,8 @@
                         } else {
                             response.json().then(function(data) {
                                 $('.add').classList.add('hidden');
-                                $('.contents').classList.remove('hidden');
                                 $('.contents').innerText = '';
+                                $('.contents').classList.remove('hidden');
                                 let rows = data.rows;
                                 if (rows.length === 0) {
                                     $('.contents').innerText = 'No rows found';
@@ -300,7 +301,9 @@
                                             let key = lines[0];
                                             let li = document.createElement('li');
                                             li.classList.add('row');
-                                            li.innerHTML = `${key} <a href="javascript:void(0)">View</a><br>`
+                                            li.innerHTML = `${key} `
+                                                + `<a href="javascript:void(0)" class="view">View</a>`
+                                                + `<br>`
                                                 + `<span class="hidden">${lines.splice(1).join('\n')}</span>`;
                                             ul.appendChild(li);
                                         });
@@ -347,14 +350,18 @@
     });
 
     $('.contents').addEventListener('click', function(ev) {
-        if (ev.target.parentNode && ev.target.parentNode.classList.contains('row')) {
-            if (ev.target.tagName.toLowerCase() === 'a') {
-                if (ev.target.parentNode.querySelector('.hidden')) {
-                    ev.target.parentNode.querySelector('.hidden').classList.remove('hidden');
-                    ev.target.innerText = 'Hide';
-                } else {
-                    ev.target.parentNode.querySelector('span').classList.add('hidden');
-                    ev.target.innerText = 'View';
+        let tgt = ev.target;
+        let parent = tgt.parentNode;
+        if (parent && parent.classList.contains('row')) {
+            if (tgt.tagName.toLowerCase() === 'a') {
+                if (tgt.classList.contains('view')) {
+                    if (parent.querySelector('.hidden')) {
+                        parent.querySelector('.hidden').classList.remove('hidden');
+                        tgt.innerText = 'Hide';
+                    } else {
+                        parent.querySelector('span').classList.add('hidden');
+                        tgt.innerText = 'View';
+                    }
                 }
             }
         }

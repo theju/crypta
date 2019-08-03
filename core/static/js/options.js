@@ -127,6 +127,7 @@
 
     $('[name=keys_file]').addEventListener('change', function (ev) {
         var fr = new FileReader();
+        document.querySelectorAll(".error").forEach(ii => ii.remove());
         fr.addEventListener('load', function (event) {
             var data = event.target.result;
             var keys = openpgp.key.readArmored(data).keys;
@@ -135,6 +136,12 @@
                 $('[name=private_key]').value = data;
                 var pubKeyData = privKeyObj.primaryKey.writePublicKey();
                 $('[name=public_key]').value = privKeyObj.toPublic().armor();
+                $('[name=passphrase]').focus();
+            } else {
+                let error = document.createElement('p');
+                error.classList.add('error');
+                error.innerText = "Invalid Key";
+                ev.target.after(error);
             }
         });
         fr.readAsText(ev.target.files[0]);

@@ -5,8 +5,8 @@ Crypta is a web-based password storage vault inspired by [Pass](https://www.pass
 ## Overview
 
 Every user either generates OpenPGP keys or loads their existing private key.
-All the passwords are encrypted and stored on the server and so the server has
-no knowledge of the contents stored on it.
+All the passwords are encrypted on the client-side and stored on the server 
+and so the server has no knowledge of the contents stored on it.
 
 **Note**: Losing the key or passphrase will result in the passwords becoming
 inaccessible.
@@ -35,7 +35,7 @@ $ pipenv install
 $ pipenv shell
 # Create a crypta/local.py file and add the
 # `SECRET_KEY`, `DEBUG` and `ALLOWED_HOSTS` django settings attributes
-$ python manage.py migratedb
+$ python manage.py migrate
 $ python manage.py runserver
 ```
 

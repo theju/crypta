@@ -1,9 +1,25 @@
+# Local vaults and secrets
+*.crypta
+.env
+.env.*
+!.env.example
+
+# JavaScript tooling and test output
+node_modules/
+coverage/
+.nyc_output/
+dist/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
 *~
-*.pyc
-*.pyo
 *.swp
-__pycache__/*
-
-crypta/local.py
-
-*.sqlite3
+*.swo

@@ -1,0 +1,19 @@
+{
+  "name": "Crypta Password Vault",
+  "short_name": "Crypta",
+  "description": "A private, file-based password vault that encrypts everything in your browser.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f4ec",
+  "theme_color": "#17221d",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17221d">
+    <meta name="color-scheme" content="light">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+    <title>Crypta</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body class="framing-protected">
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="Crypta home">
+        <img src="icon.svg" alt="" width="36" height="36">
+        <span>Crypta</span>
+      </a>
+      <div id="vault-actions" class="header-actions" hidden>
+        <button id="export-button" class="button primary" type="button">Export vault</button>
+        <button id="settings-button" class="button quiet" type="button">Security</button>
+        <button id="lock-button" class="button quiet" type="button">Lock</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="welcome-view" class="welcome-view" aria-labelledby="welcome-title">
+        <div class="hero">
+          <p class="eyebrow">Private by design</p>
+          <h1 id="welcome-title">Your passwords.<br>Your encrypted file.</h1>
+          <p class="lede">Crypta encrypts everything in this browser. Keep the exported file in the cloud storage you already use.</p>
+          <div class="hero-actions">
+            <label class="button primary file-button">
+              Open vault
+              <input id="open-file" type="file" accept=".crypta,application/vnd.crypta.vault+json">
+            </label>
+            <button id="create-button" class="button secondary" type="button">Create new vault</button>
+          </div>
+          <p class="fine-print">No account, backend, tracking, or recovery service.</p>
+        </div>
+        <div id="drop-zone" class="drop-zone" tabindex="0">
+          <img src="icon.svg" alt="" width="72" height="72">
+          <strong>Drop a .crypta file here</strong>
+          <span>It never leaves this device.</span>
+        </div>
+      </section>
+
+      <section id="unlock-view" class="panel narrow" hidden aria-labelledby="unlock-title">
+        <button id="back-button" class="back-button" type="button">← Choose another file</button>
+        <p class="eyebrow">Encrypted vault</p>
+        <h1 id="unlock-title">Unlock your vault</h1>
+        <p id="unlock-file-name" class="muted"></p>
+        <button id="passkey-unlock-button" class="button primary full" type="button" hidden>Unlock with passkey</button>
+        <div id="unlock-divider" class="divider" hidden><span>or use your master password</span></div>
+        <form id="unlock-form">
+          <label for="unlock-password">Master password</label>
+          <input id="unlock-password" name="password" type="password" autocomplete="current-password" required>
+          <button class="button secondary full" type="submit">Unlock vault</button>
+        </form>
+      </section>
+
+      <section id="vault-view" hidden aria-labelledby="vault-title">
+        <div class="vault-toolbar">
+          <div>
+            <p class="eyebrow">Unlocked</p>
+            <h1 id="vault-title">Your vault</h1>
+            <p id="vault-status" class="muted"></p>
+          </div>
+          <button id="add-entry-button" class="button primary" type="button">+ Add entry</button>
+        </div>
+        <label class="search-box">
+          <span class="sr-only">Search credentials</span>
+          <input id="search-input" type="search" placeholder="Search titles, websites, and usernames" autocomplete="off">
+        </label>
+        <div id="entry-list" class="entry-list"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <h2>No credentials yet</h2>
+          <p>Add your first login, then export the encrypted vault file.</p>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="create-dialog">
+      <form id="create-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">New encrypted file</p><h2>Create a vault</h2></div>
+          <button class="icon-button close-dialog" type="button" aria-label="Close">×</button>
+        </div>
+        <p class="callout warning"><strong>There is no recovery.</strong> Use a unique, long multi-word password and keep it safe.</p>
+        <label for="create-password">Master password</label>
+        <input id="create-password" type="password" autocomplete="new-password" minlength="12" required>
+        <label for="confirm-password">Confirm master password</label>
+        <input id="confirm-password" type="password" autocomplete="new-password" minlength="12" required>
+        <p class="field-help">PBKDF2 performs 1,200,000 SHA-256 iterations before the password can unlock the vault.</p>
+        <button class="button primary full" type="submit">Create encrypted vault</button>
+      </form>
+    </dialog>
+
+    <dialog id="entry-dialog">
+      <form id="entry-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Credential</p><h2 id="entry-dialog-title">Add entry</h2></div>
+          <button class="icon-button close-dialog" type="button" aria-label="Close">×</button>
+        </div>
+        <input id="entry-id" type="hidden">
+        <label for="entry-title">Title</label>
+        <input id="entry-title" type="text" maxlength="200" required>
+        <label for="entry-url">Website</label>
+        <input id="entry-url" type="url" maxlength="2048" placeholder="https://example.com">
+        <label for="entry-username">Username or email</label>
+        <input id="entry-username" type="text" maxlength="500" autocomplete="off">
+        <label for="entry-password">Password</label>
+        <div class="input-action">
+          <input id="entry-password" type="password" maxlength="4096" autocomplete="new-password">
+          <button id="generate-password" class="button quiet" type="button">Generate</button>
+        </div>
+        <label for="entry-notes">Notes</label>
+        <textarea id="entry-notes" rows="5" maxlength="20000"></textarea>
+        <div class="dialog-actions split">
+          <button id="delete-entry" class="button danger" type="button" hidden>Delete</button>
+          <button class="button primary" type="submit">Save entry</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="security-dialog">
+      <div class="dialog-form">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Vault access</p><h2>Security</h2></div>
+          <button class="icon-button close-dialog" type="button" aria-label="Close">×</button>
+        </div>
+        <section class="settings-section">
+          <h3>Quick unlock passkeys</h3>
+          <p class="muted">Passkeys use WebAuthn PRF to encrypt a separate copy of the vault key.</p>
+          <div id="passkey-list" class="passkey-list"></div>
+          <button id="add-passkey-button" class="button secondary" type="button">Add passkey</button>
+          <button id="reset-passkeys-button" class="button danger" type="button" hidden>Remove all passkeys</button>
+          <p id="passkey-support" class="field-help"></p>
+        </section>
+        <section class="settings-section">
+          <h3>Change master password</h3>
+          <p class="muted">This rotates the vault key. Passkeys that cannot be refreshed will be removed.</p>
+          <button id="change-password-button" class="button secondary" type="button">Change password</button>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog id="password-dialog">
+      <form id="password-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">Confirm identity</p><h2 id="password-dialog-title">Enter master password</h2></div>
+          <button class="icon-button close-dialog" type="button" aria-label="Close">×</button>
+        </div>
+        <input id="password-purpose" type="hidden">
+        <label for="current-password">Current master password</label>
+        <input id="current-password" type="password" autocomplete="current-password" required>
+        <div id="new-password-fields" hidden>
+          <label for="new-password">New master password</label>
+          <input id="new-password" type="password" minlength="12" autocomplete="new-password">
+          <label for="new-password-confirm">Confirm new master password</label>
+          <input id="new-password-confirm" type="password" minlength="12" autocomplete="new-password">
+        </div>
+        <label id="passkey-label-row" for="passkey-label" hidden>Passkey label</label>
+        <input id="passkey-label" type="text" maxlength="80" placeholder="Personal passkey" hidden>
+        <button class="button primary full" type="submit">Continue</button>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <div id="busy" class="busy" hidden aria-live="assertive">
+      <div class="spinner"></div>
+      <strong id="busy-message">Working…</strong>
+    </div>
+  </body>
+</html>

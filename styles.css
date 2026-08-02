@@ -83,6 +83,7 @@ dialog::backdrop { background: rgb(15 24 20 / 56%); backdrop-filter: blur(4px); 
 .icon-button { border: 0; background: transparent; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--muted); }
 .callout { padding: 14px; border-radius: 12px; line-height: 1.45; font-size: .9rem; }
 .warning { background: var(--amber); }
+.form-error { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; color: #762820; background: #f6deda; font-size: .88rem; line-height: 1.45; }
 .input-action { display: flex; gap: 8px; align-items: stretch; }
 .input-action input { flex: 1; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }

@@ -1,6 +1,6 @@
 import { wipe } from "./crypto.js";
 import { addPasskey, closeSession, createVault, parseVaultFile, rotateVaultAccess, sealForExport, unlockWithPasskey, unlockWithPassword, verifyMasterPassword, MIME_TYPE, MAX_FILE_BYTES } from "./vault.js";
-import { createPasskey, passkeysAvailable, requestPasskeyPrf } from "./passkeys.js";
+import { createPasskey, passkeysAvailable, passkeySupport, requestPasskeyPrf } from "./passkeys.js";
 import { newId } from "./encoding.js";
 
 if (globalThis.top === globalThis.self) document.body.classList.remove("framing-protected");
@@ -180,11 +180,12 @@ function renderSecurity() {
     row.append(textElement("span", "muted", new Date(passkey.createdAt).toLocaleDateString()));
     list.append(row);
   }
+  const support = passkeySupport();
   $("#reset-passkeys-button").hidden = state.session.envelope.passkeys.length === 0;
-  $("#add-passkey-button").disabled = !passkeysAvailable();
-  $("#passkey-support").textContent = passkeysAvailable()
+  $("#add-passkey-button").disabled = !support.available;
+  $("#passkey-support").textContent = support.available
     ? "This browser can request passkeys. The selected provider must also support WebAuthn PRF."
-    : "Passkeys are unavailable here. Use HTTPS or localhost with a compatible browser.";
+    : support.reason;
 }
 
 function resetInactivityTimer() {
@@ -231,6 +232,8 @@ function setEntryPasswordVisibility(visible) {
 
 function openPasswordDialog(purpose) {
   $("#password-form").reset();
+  $("#password-form-error").hidden = true;
+  $("#password-form-error").textContent = "";
   $("#password-purpose").value = purpose;
   const changing = purpose === "change-password";
   const adding = purpose === "add-passkey";
@@ -244,6 +247,13 @@ function openPasswordDialog(purpose) {
   if (adding) $("#passkey-label").value = "Personal passkey";
   $("#password-dialog").showModal();
   $("#current-password").focus();
+}
+
+function showPasswordFormError(error) {
+  console.error(error);
+  const message = $("#password-form-error");
+  message.textContent = error?.message || "The security operation failed.";
+  message.hidden = false;
 }
 
 async function exportVault() {
@@ -366,6 +376,7 @@ $("#reset-passkeys-button").addEventListener("click", () => {
 
 $("#password-form").addEventListener("submit", event => {
   event.preventDefault();
+  $("#password-form-error").hidden = true;
   const purpose = $("#password-purpose").value;
   const currentPassword = $("#current-password").value;
   busy(purpose === "add-passkey" ? "Creating and verifying passkey…" : "Rotating vault encryption…", async () => {
@@ -405,7 +416,7 @@ $("#password-form").addEventListener("submit", event => {
     $("#password-dialog").close();
     renderSecurity();
     updateVaultStatus();
-  }).catch(errorMessage);
+  }).catch(showPasswordFormError);
 });
 
 document.querySelectorAll(".close-dialog").forEach(button => button.addEventListener("click", () => button.closest("dialog").close()));

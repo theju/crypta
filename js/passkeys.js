@@ -2,19 +2,32 @@ import { asArrayBuffer, fromBase64Url, randomBytes, toBase64Url } from "./encodi
 
 const TIMEOUT = 120_000;
 
+export function passkeySupport() {
+  if (!globalThis.isSecureContext) {
+    return { available: false, reason: "Passkeys require HTTPS or a localhost origin." };
+  }
+  if (!globalThis.PublicKeyCredential || !navigator.credentials?.create || !navigator.credentials?.get) {
+    return { available: false, reason: "This browser does not provide the required WebAuthn APIs." };
+  }
+  const hostname = globalThis.location?.hostname || "";
+  const isIpv4 = /^(?:\d{1,3}\.){3}\d{1,3}$/u.test(hostname);
+  const isIpv6 = hostname.includes(":");
+  if (isIpv4 || isIpv6) {
+    return {
+      available: false,
+      reason: "WebAuthn cannot use an IP address as its passkey domain. Open Crypta using localhost during development or a stable HTTPS domain in production."
+    };
+  }
+  return { available: true, reason: "" };
+}
+
 export function passkeysAvailable() {
-  return Boolean(
-    globalThis.isSecureContext &&
-    globalThis.PublicKeyCredential &&
-    navigator.credentials?.create &&
-    navigator.credentials?.get
-  );
+  return passkeySupport().available;
 }
 
 function requirePasskeys() {
-  if (!passkeysAvailable()) {
-    throw new Error("Passkeys require a supported browser and a secure HTTPS or localhost origin.");
-  }
+  const support = passkeySupport();
+  if (!support.available) throw new Error(support.reason);
 }
 
 function assertionOptions(wrappers) {

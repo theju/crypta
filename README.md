@@ -16,7 +16,7 @@ Crypta requires a secure browser context for Web Crypto, service workers, clipbo
 npm run serve
 ```
 
-Then open <http://localhost:8000>. The `npm` command only invokes Python's static file server; the application has no npm dependencies or build step.
+Then open <http://localhost:8000>. Use `localhost`, not `127.0.0.1`: WebAuthn does not permit an IP address as a passkey relying-party domain. The `npm` command only invokes Python's static file server; the application has no npm dependencies or build step.
 
 Run the dependency-free test suite with:
 

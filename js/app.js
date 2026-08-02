@@ -154,6 +154,7 @@ function renderEntries() {
 
 function openEntryDialog(entry = null) {
   $("#entry-form").reset();
+  setEntryPasswordVisibility(false);
   $("#entry-id").value = entry?.id || "";
   $("#entry-dialog-title").textContent = entry ? "Edit entry" : "Add entry";
   $("#delete-entry").hidden = !entry;
@@ -219,6 +220,15 @@ function randomPassword(length = 24) {
   return password;
 }
 
+function setEntryPasswordVisibility(visible) {
+  const input = $("#entry-password");
+  const toggle = $("#toggle-entry-password");
+  input.type = visible ? "text" : "password";
+  toggle.textContent = visible ? "Hide" : "Show";
+  toggle.setAttribute("aria-pressed", String(visible));
+  toggle.setAttribute("aria-label", visible ? "Hide password" : "Show password");
+}
+
 function openPasswordDialog(purpose) {
   $("#password-form").reset();
   $("#password-purpose").value = purpose;
@@ -255,19 +265,10 @@ async function exportVault() {
 }
 
 $("#open-file").addEventListener("change", event => {
-  busy("Reading encrypted vault…", () => openFile(event.target.files[0])).catch(errorMessage);
+  const [file] = event.target.files;
   event.target.value = "";
+  busy("Reading encrypted vault…", () => openFile(file)).catch(errorMessage);
 });
-
-const dropZone = $("#drop-zone");
-for (const eventName of ["dragenter", "dragover"]) {
-  dropZone.addEventListener(eventName, event => { event.preventDefault(); dropZone.classList.add("dragging"); });
-}
-for (const eventName of ["dragleave", "drop"]) {
-  dropZone.addEventListener(eventName, event => { event.preventDefault(); dropZone.classList.remove("dragging"); });
-}
-dropZone.addEventListener("drop", event => busy("Reading encrypted vault…", () => openFile(event.dataTransfer.files[0])).catch(errorMessage));
-dropZone.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") $("#open-file").click(); });
 
 $("#create-button").addEventListener("click", () => $("#create-dialog").showModal());
 $("#create-form").addEventListener("submit", event => {
@@ -344,9 +345,14 @@ $("#delete-entry").addEventListener("click", () => {
 
 $("#generate-password").addEventListener("click", () => {
   const password = randomPassword();
-  $("#entry-password").type = "text";
   $("#entry-password").value = password;
+  setEntryPasswordVisibility(true);
   showToast("Generated a 24-character password.");
+});
+
+$("#toggle-entry-password").addEventListener("click", () => {
+  setEntryPasswordVisibility($("#entry-password").type === "password");
+  $("#entry-password").focus();
 });
 
 $("#export-button").addEventListener("click", () => exportVault().catch(errorMessage));

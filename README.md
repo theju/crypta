@@ -4,6 +4,10 @@ Crypta is a dependency-free, file-based password vault. It is a static PWA made 
 
 Credentials are encrypted in the browser and exported as a `.crypta` file. Put that file in Dropbox, Google Drive, iCloud Drive, Syncthing, or any other storage you trust to synchronize opaque encrypted data.
 
+## Disclaimer
+
+The current Crypta v2 codebase is completely AI-generated. It has not undergone an independent security audit; review and test it carefully before trusting it with sensitive credentials.
+
 ## Run locally
 
 Crypta requires a secure browser context for Web Crypto, service workers, clipboard access, and passkeys. `localhost` is considered secure by browsers:

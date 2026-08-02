@@ -40,11 +40,6 @@
           </div>
           <p class="fine-print">No account, backend, tracking, or recovery service.</p>
         </div>
-        <div id="drop-zone" class="drop-zone" tabindex="0">
-          <img src="icon.svg" alt="" width="72" height="72">
-          <strong>Drop a .crypta file here</strong>
-          <span>It never leaves this device.</span>
-        </div>
       </section>
 
       <section id="unlock-view" class="panel narrow" hidden aria-labelledby="unlock-title">
@@ -114,6 +109,7 @@
         <label for="entry-password">Password</label>
         <div class="input-action">
           <input id="entry-password" type="password" maxlength="4096" autocomplete="new-password">
+          <button id="toggle-entry-password" class="button quiet" type="button" aria-pressed="false">Show</button>
           <button id="generate-password" class="button quiet" type="button">Generate</button>
         </div>
         <label for="entry-notes">Notes</label>

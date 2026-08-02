@@ -29,18 +29,15 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:fo
 .header-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: clamp(40px, 7vw, 88px) 0 80px; }
 
-.welcome-view { min-height: calc(100vh - 220px); display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: clamp(40px, 8vw, 110px); }
+.welcome-view { min-height: calc(100vh - 220px); display: flex; align-items: center; }
+.hero { width: 100%; }
 .hero h1, #unlock-title, #vault-title { margin: 8px 0 18px; font-family: Georgia, "Times New Roman", serif; font-weight: 500; letter-spacing: -.045em; line-height: .98; }
-.hero h1 { font-size: clamp(3.1rem, 7vw, 6.8rem); }
+.hero h1 { max-width: 1100px; font-size: clamp(3.4rem, 9vw, 8.4rem); }
 #unlock-title, #vault-title { font-size: clamp(2.5rem, 5vw, 4rem); }
 .eyebrow { margin: 0; color: var(--green); font-size: .76rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-.lede { max-width: 620px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.3rem); line-height: 1.65; }
+.lede { max-width: 800px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.65; }
 .fine-print, .field-help { color: var(--muted); font-size: .82rem; line-height: 1.5; }
 .hero-actions { display: flex; gap: 12px; margin: 30px 0 18px; flex-wrap: wrap; }
-
-.drop-zone { min-height: 310px; border: 1px dashed #96a49d; border-radius: 28px; background: rgb(255 253 248 / 72%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); transition: .2s ease; }
-.drop-zone strong { color: var(--ink); font-size: 1.05rem; }
-.drop-zone.dragging { transform: translateY(-3px); border-color: var(--green); background: var(--mint); }
 
 .button { border: 1px solid transparent; border-radius: 999px; padding: 11px 18px; min-height: 44px; cursor: pointer; font-weight: 720; transition: transform .15s ease, background .15s ease, border .15s ease; }
 .button:hover { transform: translateY(-1px); }
@@ -104,8 +101,6 @@ dialog::backdrop { background: rgb(15 24 20 / 56%); backdrop-filter: blur(4px); 
 [hidden] { display: none !important; }
 
 @media (max-width: 760px) {
-  .welcome-view { grid-template-columns: 1fr; }
-  .drop-zone { min-height: 190px; }
   .header-actions .quiet { padding-inline: 12px; }
   .vault-toolbar { align-items: start; flex-direction: column; }
   .entry-card { grid-template-columns: 1fr; }

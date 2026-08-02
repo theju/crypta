@@ -1,4 +1,4 @@
-const CACHE_NAME = "crypta-v2-1";
+const CACHE_NAME = "crypta-v2-4";
 const APP_FILES = [
   "./",
   "./index.html",

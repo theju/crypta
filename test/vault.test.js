@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { addPasskey, createVault, parseVaultFile, rotateVaultAccess, sealForExport, unlockWithPasskey, unlockWithPassword, validateEnvelope } from "../js/vault.js";
-import { randomBytes, toBase64Url } from "../js/encoding.js";
+import { fromBase64Url, randomBytes, toBase64Url } from "../js/encoding.js";
 
 const PASSWORD = "correct horse battery staple";
 
@@ -42,8 +42,9 @@ test("vault lifecycle authenticates password, payload, and passkey wrappers", as
   await assert.rejects(unlockWithPassword(nextEnvelope, "definitely incorrect"), /could not be authenticated/u);
 
   const tampered = structuredClone(nextEnvelope);
-  const ciphertext = tampered.payload.ciphertext;
-  tampered.payload.ciphertext = `${ciphertext.slice(0, -1)}${ciphertext.endsWith("A") ? "B" : "A"}`;
+  const ciphertext = fromBase64Url(tampered.payload.ciphertext);
+  ciphertext[0] ^= 1;
+  tampered.payload.ciphertext = toBase64Url(ciphertext);
   await assert.rejects(unlockWithPassword(tampered, PASSWORD), /could not be authenticated/u);
 });
 
